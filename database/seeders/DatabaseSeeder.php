@@ -14,10 +14,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Run role-related seeders first
+        $this->call([
+            RolesAndPermissionsSeeder::class,
+            RoleSeeder::class,
+        ]);
+
         // Ensure roles exist
         $this->createRoles();
 
-        // Create users and assign roles
+        // Create users and assign roles BEFORE seeding articles
         $admin = User::create([
             'name' => 'Administrator',
             'email' => 'admin@example.com',
@@ -38,6 +44,9 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password123'),
         ]);
         $executive->assignRole('executive');
+
+        // Now that users exist, seed articles
+        $this->call(ArticleSeeder::class);
     }
 
     /**
