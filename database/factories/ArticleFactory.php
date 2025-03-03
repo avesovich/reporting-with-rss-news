@@ -8,21 +8,19 @@ use Carbon\Carbon;
 
 class ArticleFactory extends Factory
 {
-    protected static $dateCounter; // ✅ Define a static variable for persistence
+    protected static $dateCounter;
 
     public function definition(): array
     {
-        // Initialize dateCounter on the first run
         if (!isset(self::$dateCounter)) {
             self::$dateCounter = Carbon::create(2025, 2, 9);
         }
 
-        // Get the current date and increment for the next record
         $currentDate = self::$dateCounter->copy();
-        self::$dateCounter->addDay(); // ✅ Increment by 1 day
+        self::$dateCounter->addDay();
 
         return [
-            'user_id' => $this->faker->randomElement([2, 4]),
+            'user_id' => $this->faker->randomElement([2]),
             'publication_date' => $this->faker->date(),
             'posted_date' => now()->toDateString(),
             'time_posted' => now()->toTimeString(),
@@ -41,7 +39,7 @@ class ArticleFactory extends Factory
             'analysis' => $this->faker->paragraph(),
             'recommendation' => $this->faker->paragraph(),
             
-            'created_at' => $currentDate, // ✅ Sequential date
+            'created_at' => $currentDate,
             'updated_at' => now(),
         ];
     }
